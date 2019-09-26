@@ -1,0 +1,91 @@
+﻿/// <reference path="variables.less" />
+
+#Fonts {
+       .MyriadPro (@fontSize: 16, @fontStyle: normal) {
+              font-family: 'Myriad Pro', sans-serif;
+              font-weight: @font-normal;
+              font-style: @fontStyle;
+              .font-size(@fontSize);
+       }
+
+       .Normal {
+              font-family: 'Myriad Pro', sans-serif;
+       }
+
+       .Bold {
+              font-family: 'Myriad Pro', sans-serif;
+			  font-weight: 600;
+       }
+
+       .Bolder {
+              font-family: 'Myriad Pro', sans-serif;
+			  font-weight: 700;
+       }
+}
+
+.font-size(@sizeValue) when (isnumber(@sizeValue)) { /* rem's work for IE9+, px fallback for IE8 and under */
+  @remValue: (@sizeValue / 10);
+  @pxValue: @sizeValue;
+  font-size: ~"@{pxValue}px"; 
+  font-size: ~"@{remValue}rem";
+}
+
+.font-size(@sizeValue) when (isstring(@sizeValue)) { /* rem's work for IE9+, px fallback for IE8 and under */
+  font-size: ~"@{sizeValue}"; 
+}
+
+.min-height(@pixels) {
+       min-height:  ~"@{pixels}px";
+       height: auto !important;
+       height: ~"@{pixels}px";
+}
+
+.box-shadow(@attributes) {
+       -webkit-box-shadow: ~"@{attributes}";
+       -moz-box-shadow: ~"@{attributes}";
+       box-shadow: ~"@{attributes}";
+}
+
+.border-radius(@attributes) {
+       -webkit-border-radius: ~"@{attributes}";
+       -moz-border-radius: ~"@{attributes}";
+       border-radius: ~"@{attributes}";
+}
+
+.opacity(@opacity) {
+       @opperc: @opacity * 100;
+       -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
+       filter: ~"alpha(opacity=@{opperc})";
+       -webkit-opacity: @opacity;
+       -moz-opacity: @opacity;
+       -khtml-opacity: @opacity;
+       opacity: @opacity;
+}
+
+.transform(@attributes) {
+       -webkit-transform: ~"@{attributes}";
+       -moz-transform: ~"@{attributes}";
+       -o-transform: ~"@{attributes}";
+       -ms-transform: ~"@{attributes}";
+       transform: ~"@{attributes}";
+}
+
+.rotation(@deg:5deg){
+       .transform(rotate(@deg));
+}
+
+.scale(@ratio:1.5){
+       .transform(scale(@ratio));
+}
+
+.translate(@x:0, @y:0) {
+       .transform(translate(@x, @y));
+}
+
+.transition(@duration:0.2s, @ease:ease-out) {
+       -webkit-transition: @duration @ease;
+       -moz-transition: @duration @ease;
+       -o-transition: @duration @ease;
+       transition: @duration @ease;
+}
+

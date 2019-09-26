@@ -1,0 +1,26 @@
+﻿textarea:focus, input:focus, select:focus {
+    outline: 0;
+}
+
+sup {
+	top: -0.3em;
+	left: 2px;
+}
+
+p {
+    padding:0;
+    margin:0 0 15px 0;
+}
+
+ul, ol {
+	margin:0;
+	padding:0;
+}
+
+li{
+	margin-left: 20px;
+}
+
+a:focus, a:active {
+	outline: 0;
+}
