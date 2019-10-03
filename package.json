@@ -1,0 +1,35 @@
+{
+  "name": "Video_Admin_Tool",
+  "version": "1.0.0",
+  "description": "* Username\r * Password",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^7.0.0",
+    "ejs": "^2.7.1",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.5",
+    "js-autocomplete": "^1.0.4",
+    "knex": "^0.16.5",
+    "path": "^0.12.7",
+    "pg": "^7.11.0",
+    "serve-favicon": "^2.5.0",
+    "url-search-params-polyfill": "^7.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinearSix/Video_Admin_Tool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LinearSix/Video_Admin_Tool/issues"
+  },
+  "homepage": "https://github.com/LinearSix/Video_Admin_Tool#readme"
+}

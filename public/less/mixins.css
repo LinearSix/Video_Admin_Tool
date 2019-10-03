@@ -1,0 +1,12 @@
+﻿#Fonts .Normal {
+  font-family: 'Myriad Pro', sans-serif;
+}
+#Fonts .Bold {
+  font-family: 'Myriad Pro', sans-serif;
+  font-weight: 600;
+}
+#Fonts .Bolder {
+  font-family: 'Myriad Pro', sans-serif;
+  font-weight: 700;
+}
+/*# sourceMappingURL=mixins.css.map */

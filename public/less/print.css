@@ -1,0 +1,120 @@
+﻿@media print {
+  body {
+    overflow: unset !important;
+  }
+  #trigger,
+  #secondaryNavigation,
+  #search,
+  #mobile-search-btn,
+  #mp-menu,
+  .page-title img,
+  .breadcrumbs,
+  .banner-img,
+  .slider,
+  #body-content img,
+  .resources article img,
+  #press-releases article img,
+  #press-releases a.btn.arrow,
+  #news-articles article img,
+  #news-articles a.btn.arrow,
+  .article-background-image,
+  .videoWrapper,
+  #leadership img,
+  .country-links,
+  #page-listings img,
+  #home-callouts,
+  .home #media .grid .grid-sizer,
+  .home #media .grid .grid-item img,
+  #btn-view-all,
+  #secondary-callouts,
+  footer .footer-logo,
+  .social-icons,
+  .copyright-nav {
+    display: none !important;
+  }
+  .page-title h1 {
+    font-size: 30px;
+  }
+  #body-content h2 {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+  #body-content h3 {
+    font-size: 20px;
+    margin-bottom: 0;
+  }
+  #body-content h4 {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+  #banner {
+    border: 0;
+  }
+  .page-title {
+    padding: 22px 0 10px 0;
+  }
+  #body-content .container div[class*="col-"] {
+    width: 100% !important;
+  }
+  a[href]:after {
+    content: none !important;
+  }
+  body.home #banner {
+    margin-top: 15px;
+  }
+  .home #media .grid .grid-sizer,
+  .home #media .grid .grid-item {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin-bottom: 0;
+  }
+  #body-content,
+  .home #media,
+  #media {
+    margin: 0;
+  }
+  footer,
+  div.acc,
+  #resource-center .grid,
+  .home #media,
+  #media .grid {
+    padding: 0;
+  }
+  div.acc.border-left,
+  div.acc.padding-left {
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+  header {
+    height: auto;
+  }
+  header #logo {
+    margin-top: 15px;
+  }
+  .page-title.icon-title h1 {
+    padding-top: 0;
+  }
+  .page-title.aboutUs {
+    padding-bottom: 0;
+  }
+  form[name="NfpForm"] {
+    width: 350px;
+  }
+  #cityState input,
+  #cityState select,
+  #zip input {
+    margin-bottom: 15px;
+  }
+  button[type=submit] {
+    border: 1px solid #cccccc;
+  }
+  .home #media {
+    padding-bottom: 50px !important;
+  }
+  footer .footer-copyright-container {
+    float: left;
+  }
+}
+/*# sourceMappingURL=print.css.map */

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/index.css" charset="utf-8">
+        <link rel="stylesheet" href="/auto-complete.css" charset="utf-8">
+        <script type="text/javascript" src="/media_objects.js"></script>
+    <title>NFP | Video Search Tool</title>
+</head>
+<body>
+    <div class="div_body">
+        <div class="div_main_container">
+            <div class="div_sub_container">
+                <div class="logo_container">
+                    <img src="https://internal.nfp.com/webfiles/public/2015/emails/pardot-templates/images/nfp-logo-green-cmyk-150px.png" alt="NFP" style="border: none; display: block;"/>
+                </div>
+                <div class="search_container">
+                    <div class="div_headline">
+                        NFP Media Search
+                    </div>
+                </div>
+                <form method="GET" action="index.html">
+                <div class="search_container">
+                    <div class="search_box">
+                        <input type="text" autofocus id="nfpSearchInput" name="add" class="nfpSearchBoxInput" placeholder="Search Videos" />
+                        <a class="nfpSearchIcon" href=""><input type="image" name="submit" width="50" src="https://webfiles2.nfp.com/webfiles/public/mg/icon-search-mobile.png" alt="Search" class="img-responsive" style="display: block;" /></a>
+                    </div>
+                </div>
+                </form>
+                <div class="pagination_container">
+                    <font style="color: #303030;"><strong>1-25</strong> |</font> 26-50 <font style="color: #000000;">|</font> 51-75
+                </div>
+                <div class="tags_container" id="tags_container">
+                </div>
+                <table class="table_sort" id="tableVideoList">
+                    <tr class="table_sort_header">
+                        <td width="150">A-Z</td>
+                        <td>Tags</td>
+                        <td>Length</td>
+                        <td>Description</td>
+                        <td>URL</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/auto-complete.js"></script>
+    <script>
+        var demo1 = new autoComplete({
+            selector: '#nfpSearchInput',
+            minChars: 1,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                var choices = [`animation`, `serious`, `Doug Hammond`, `Addiction Treatment`, `Mike Goldman`, `Breweries`, `Cemeteries & Memorial Parks`, `Chemical`, `Clubs & Golf Courses`, `Communications, Media & Technology`, `Condominium Homeowners`, `Construction`];
+                var suggestions = [];
+                for (i=0;i<choices.length;i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            }
+        });
+
+        if (~window.location.href.indexOf('http')) {
+            (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=114593902037957";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            document.getElementById('github_social').innerHTML = '\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=JavaScript-autoComplete&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=JavaScript-autoComplete&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+            ';
+        }
+    </script>
+</body>
+</html>

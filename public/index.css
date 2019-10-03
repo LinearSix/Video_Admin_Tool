@@ -1,0 +1,174 @@
+    /* @font-face {
+        font-family: "myriad-pro";
+        src: url("acherus_grotesque_-_regular.otf") format("opentype");
+    } */
+    body, html {
+        height: 100%;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        font-size: 12px;
+        line-height: 16px;
+    }
+    .div_body {
+        min-height: 100%;
+        position: relative;
+        box-sizing: border-box;
+        background-image: linear-gradient(#ffffff, #ffffff);
+        background-size: 100vw; 
+        border: solid yellow 2px;
+        background: #cbd3d3;
+    }
+    .div_main_container {
+        /* position: relative; */
+        width: 80%;
+        max-width: 1000px;
+        min-height: 100vh;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 30px;
+        /* border: solid green 2px; */
+        background: #d2cbd3;
+    }
+    .div_sub_container {
+        position: relative;
+        float: none;
+        width: 90%;
+        min-height: 100%;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0px;
+        padding-right: 0px;
+        font-family: Arial, sans-serif;
+        color: #000000;
+        overflow: visible;
+        /* border: solid blue 1px; */ */
+    }
+    .logo_container {
+        position: relative;
+        float: left;
+        width: 49%;
+        height: 70px;
+        /* border: 1px purple solid; */
+    }
+    .search_container {
+        position: relative;
+        float: right;
+        width: 49%;
+        /* border: 1px red solid; */
+    }
+    .div_headline {
+        font-size: 28px;
+        line-height: 28px;
+        height: 60px;
+        font-weight: 600;
+        text-align: right;
+        color: #606060;
+    }
+    .pagination_container {
+        float: left;
+        padding: 5px;
+        width: 98%;
+        height: 20px;
+        position: relative;
+        color: blue;
+        /* border: 1px navy solid; */
+    }
+    .table_sort {
+        border: 1px solid #ffffff;
+        border-collapse: collapse;
+        color: #606060;
+    }
+    .table_sort td {
+        vertical-align: top;
+        border: 1px solid #ffffff;
+        border-collapse: collapse;
+        padding: 5px;
+    }
+    .table_sort tr:nth-child(even) {
+        background-color: #a2d8d8;
+    }
+    .table_sort tr:nth-child(odd) {
+        background-color: #e0e0e0;
+    }
+    .table_sort_header td {
+        vertical-align: top;
+        background-color: #303030;
+        border: 1px solid #ffffff;
+        border-collapse: collapse;
+        padding: 5px;
+        color: #ffffff;
+        font-weight: bold;
+    }
+    .td_description {
+        font-size: 11px;
+        line-height: 14px;
+    }
+    .search_box {
+        float: right;
+        min-width: 400px;
+        border-radius: 15px;
+        border: 1px solid #D9D9D9;
+        padding: 0 10px 0 10px;
+        position: relative;
+        background-color: white
+    }
+    .nfpSearchBoxInput {
+        width: 90%!important;
+        border: none;
+        display: inline-block;
+        /* border: 1px red solid; */
+        position: relative;
+        bottom: 3.5px;
+    }
+    a.nfpSearchIcon {
+        display: inline-block
+    }
+    a.nfpSearchIcon img {
+        width: 25px;
+        vertical-align: bottom;
+        display: inline-block
+    }
+    
+@media screen and (max-width: 950px) {
+
+    .div_body {
+        min-height: 100%;
+        position: relative;
+        box-sizing: border-box;
+        background-size: 100vw;
+        /* border: solid yellow 2px; */
+    }
+    .div_main_container {
+        position: relative;
+        width: 90%;
+        min-height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-bottom: 40px;
+        /* border: solid green 2px; */
+    }
+}
+
+@media screen and (max-width: 780px) {
+
+    .div_main_container {
+        position: relative;
+        width: 100%;
+        min-height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-bottom: 150px;
+    }
+    .div_sub_container {
+        float: none;
+        width: 95%;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0px;
+        padding-right: 0px;
+        color: rgb(255, 255, 255);
+        /* border: solid green 1px; */
+    }
+}
