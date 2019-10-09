@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="/index.css" charset="utf-8">
         <link rel="stylesheet" href="/auto-complete.css" charset="utf-8">
-        <script type="text/javascript" src="/media_objects.js"></script>
+        <!-- <script type="text/javascript" src="/media_objects.js"></script> -->
     <title>NFP | Video Search Tool</title>
 </head>
 <body>
@@ -34,17 +34,52 @@
                 <div class="tags_container" id="tags_container">
                 </div>
                 </form>
+                <form action="/update/<%= videoRecord[0].videoID %>" method="POST">
                 <table class="table_sort" id="tableVideoList">
                     <tr class="table_sort_header">
-                        <td width="150">Name</td>
+                        <td>Name</td>
                         <td>Type</td>
                         <td>Tags</td>
                         <td>Length</td>
                         <td>Description</td>
                         <td>URL</td>
-                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="videoName" value="<%= videoRecord[0].videoName %>"></td>
+                        <td><select name="videoType">
+                            <% if (videoRecord[0].videoType === "video") { %>
+                            <option selected value="video">video</option>
+                            <% } else { %>
+                            <option value="video">video</option>
+                            <% } %>
+                            <% if (videoRecord[0].videoType === "audio") { %>
+                                <option selected value="audio">audio</option>
+                            <% } else { %>
+                                <option value="audio">audio</option>
+                            <% } %>
+                            <% if (videoRecord[0].videoType === "image") { %>
+                                <option selected value="image">image</option>
+                            <% } else { %>
+                                <option value="image">image</option>
+                            <% } %>
+                        </select></td>
+                        <td><% let stringTags = videoRecord[0].videoTags; %>
+                            <% stringTags = stringTags.toString(); %>
+                            <% let splitTags = stringTags.split(","); %>
+                            <% for (let i=0; i<splitTags.length; i++) { %>
+                                <button name="videoTags"><%= splitTags[i] %>&nbsp;<a href="">X</a></button>
+                            <% } %>
+                            </td>
+                        <td><input type="text" name="videoLength" value="<%= videoRecord[0].videoLength %>"></td>
+                        <td><textarea name="videoDesc"><%= videoRecord[0].videoDesc %></textarea></td>
+                        <td><input type="text" name="videoURL" value="<%= videoRecord[0].videoURL %>">
+                            <br /><a href="<%= videoRecord[0].videoURL %>" target="_blank"><%= videoRecord[0].videoURL %></a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" align="center"><input type="submit" value="Update"></td>
                     </tr>
                 </table>
+                </form>
             </div>
         </div>
     </div>
@@ -55,8 +90,7 @@
             minChars: 1,
             source: function(term, suggest){
                 term = term.toLowerCase();
-                var choices = [<% for(let i=0;i<videoRecords.length;i++){%>'<%= videoRecords[i].videoTags %>', <% } %>]
-                // var choices = [`animation`, `interview`, `serious`, `comedic`, `instructional`, `Kim Davis`, `Doug Hammond`, `Addiction Treatment`, `Mike Goldman`, `Breweries`, `Cemeteries & Memorial Parks`, `Chemical`, `Clubs & Golf Courses`, `Communications, Media & Technology`, `Condominium Homeowners`, `Construction`];
+                var choices = [`animation`, `interview`, `serious`, `comedic`, `instructional`, `Kim Davis`, `Doug Hammond`, `Addiction Treatment`, `Mike Goldman`, `Breweries`, `Cemeteries & Memorial Parks`, `Chemical`, `Clubs & Golf Courses`, `Communications, Media & Technology`, `Condominium Homeowners`, `Construction`];
                 var suggestions = [];
                 for (i=0;i<choices.length;i++)
                     if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);

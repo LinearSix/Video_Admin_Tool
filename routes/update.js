@@ -17,13 +17,13 @@ fs.readFile('./public/vimeo.json', function read(err, data) {
 
 
     // render edit page
-    router.get('/index', (req, res, next) => {
-        let videoRecords = [];
-        for (let item in records) {
-            videoRecords.push(records[item])
-        };        
-        // console.log(videoRecords)
-        res.render('index', { videoRecords })
+    router.get('/update/:id', (req, res, next) => {
+        let id = req.params.id
+        let videoObject = records.filter(function(r) { return r["videoID"] == id })[0]||null
+        let videoRecord = [];
+        videoRecord.push(videoObject)
+        console.log(videoRecord)
+        res.render('edit', { videoRecord })
     });
 
 });

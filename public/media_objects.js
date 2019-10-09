@@ -1,133 +1,174 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    let videoArray = [
-        {
-            "videoID": 1,
-            "videoName": `Video 1`,
-            "videoLength": `1:11`,
-            "videoDesc": `Video 1 is all about the number 1.`,
-            "videoURL": `https://vimeo.com/1`,
-            "videoTags": [`animation`, `serious`, `Doug Hammond`, `Addiction Treatment`]
-        },
-        {
-            "videoID": 2,
-            "videoName": `Video 2`,
-            "videoLength": `2:00`,
-            "videoDesc": `Video 2 is all about the number 2.`,
-            "videoURL": `https://vimeo.com/2`,
-            "videoTags": [`animation`, `serious`, `Mike Goldman`, `Breweries`]
-        },
-        {
-            "videoID": 3,
-            "videoName": `Video 3`,
-            "videoLength": `3:00`,
-            "videoDesc": `Video 3 is all about the number 3.`,
-            "videoURL": `https://vimeo.com/3`,
-            "videoTags": [`animation`, `comedic`, `Doug Hammond`, `Cemeteries & Memorial Parks`]
-        },
-        {
-            "videoID": 4,
-            "videoName": `Video 4`,
-            "videoLength": `4:00`,
-            "videoDesc": `Video 4 is all about the number 4.`,
-            "videoURL": `https://vimeo.com/4`,
-            "videoTags": [`animation`, `comedic`, `Mike Goldman`, `Chemical`]
-        },
-        {
-            "videoID": 5,
-            "videoName": `Video 5`,
-            "videoLength": `5:00`,
-            "videoDesc": `Video 5 is all about the number 5.`,
-            "videoURL": `https://vimeo.com/5`,
-            "videoTags": [`interview`, `serious`, `Doug Hammond`, `Clubs & Golf Courses`]
-        },
-        {
-            "videoID": 6,
-            "videoName": `Video 6`,
-            "videoLength": `6:00`,
-            "videoDesc": `Video 6 is all about the number 6.`,
-            "videoURL": `https://vimeo.com/6`,
-            "videoTags": [`interview`, `serious`, `Mike Goldman`, `Communications, Media & Technology`]
-        },
-        {
-            "videoID": 7,
-            "videoName": `Video 7`,
-            "videoLength": `7:00`,
-            "videoDesc": `Video 7 is all about the number 7.`,
-            "videoURL": `https://vimeo.com/7`,
-            "videoTags": [`interview`, `comedic`, `Doug Hammond`, `Condominium Homeowners`]
-        },
-        {
-            "videoID": 8,
-            "videoName": `Video 8`,
-            "videoLength": `8:00`,
-            "videoDesc": `Video 8 is all about the number 8.`,
-            "videoURL": `https://vimeo.com/8`,
-            "videoTags": [`interview`, `comedic`, `Mike Goldman`, `Construction`]
-        },
-    ];
+    // get the json file and assign it to videoArray
+    let videoArray;
 
-    // Variables used for getting data from query string
-    let urlParams = new URLSearchParams(window.location.search);
-    let searchData = (urlParams.get(`add`));
-    let searchAdd = [];
-    searchAdd = (urlParams.get(`add`));
-    let searchRemove = (urlParams.get(`remove`));
+    function loadJSON(path, success, error) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function()
+        {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    if (success)
+                        success(JSON.parse(xhr.responseText));
+                } else {
+                    if (error)
+                        error(xhr);
+                }
+            }
+        };
+        xhr.open("GET", path, true);
+        xhr.send();
+    }
 
-    // control and format tags in querystring
-    let splitAdd = [];
-    let splitTemp;
-    if (searchAdd && searchRemove) {
-        splitTemp = [];
-        splitTemp = searchAdd.split(",");
-        for (item in splitTemp) {
-            if (splitTemp[item] !== "null" && splitTemp[item] !== searchRemove) {
-                splitAdd.push(splitTemp[item]);
+    // all client-side work with videoArray must be inside this function
+    loadJSON('vimeo.json', function(data) {
+         videoArray = (data); console.log(`videoArray: ${videoArray}`); 
+
+        // Variables used for getting data from query string
+        let urlParams = new URLSearchParams(window.location.search);
+        let searchData = (urlParams.get(`add`));
+        // let searchAdd = [];
+        let searchAdd = (urlParams.get(`add`));
+        let searchOld = [];
+        let splitOld = [];
+        searchOld = (urlParams.get(`old`));
+        let searchRemove = (urlParams.get(`remove`));
+        let tagsContainer = document.getElementById(`tags_container`)
+        let tagButton;
+
+        // render  tag buttons
+        if (searchOld && searchAdd) {
+            
+            // create hidden field and tag buttons
+            splitTemp = [];
+            splitTemp = searchOld.split(",");
+            splitTemp = [...new Set(splitTemp)]
+            for (item in splitTemp) {
+                if (splitTemp[item] !== "null" && splitTemp[item] !== searchRemove) {
+                    splitOld.push(splitTemp[item]);
+                    splitOld.push(searchAdd);
+                    splitOld = [...new Set(splitOld)]
+                    
+                    // create tag buttons from old
+                    tagButton = document.createElement('button');
+                    tagButton.setAttribute('name', 'remove');
+                    tagButton.setAttribute('value', splitTemp[item]);
+                    // tagButton.setAttribute('class', 'btn');
+                    tagButton.innerHTML = `${splitTemp[item]} X`;
+                    tagsContainer.appendChild(tagButton);
+                };
+            };
+
+            tagButton = document.createElement('button');
+            tagButton.setAttribute('name', 'remove');
+            tagButton.setAttribute('value', searchAdd);
+            // tagButton.setAttribute('class', 'btn');
+            tagButton.innerHTML = `${searchAdd} X`;
+            tagsContainer.appendChild(tagButton);
+            // also create a tag button from add
+            // document.getElementById(`tags_container`).innerHTML = (`<button>${searchAdd} <a href="index?remove=${searchAdd}">X</a></button>`);
+            searchOld = splitOld.join();
+            console.log(searchOld);
+
+            let hiddenAdd = document.createElement(`input`);
+            hiddenAdd.type = `hidden`;
+            hiddenAdd.name = `old`;
+            hiddenAdd.value = searchOld;
+            document.getElementById(`nfpSearchInput`).appendChild(hiddenAdd);
+
+        } else if (searchOld) {
+            
+            // create hidden field and tag buttons
+            splitTemp = [];
+            splitTemp = searchOld.split(",");
+            splitTemp = [...new Set(splitTemp)]
+            for (item in splitTemp) {
+                if (splitTemp[item] !== "null" && splitTemp[item] !== searchRemove) {
+                    splitOld.push(splitTemp[item]);
+                    
+                    // create tag buttons from old
+                    tagButton = document.createElement('button');
+                    tagButton.setAttribute('name', 'remove');
+                    tagButton.setAttribute('value', splitTemp[item]);
+                    // tagButton.setAttribute('class', 'btn');
+                    tagButton.innerHTML = `${splitTemp[item]} X`;
+                    tagsContainer.appendChild(tagButton);
+                };
+            };
+
+            searchOld = splitOld.join();
+            console.log(searchOld);
+
+            let hiddenAdd = document.createElement(`input`);
+            hiddenAdd.type = `hidden`;
+            hiddenAdd.name = `old`;
+            hiddenAdd.value = searchOld;
+            document.getElementById(`nfpSearchInput`).appendChild(hiddenAdd);
+
+        } else if (searchAdd) {
+            
+            // create tag button
+            document.getElementById(`tags_container`).innerHTML = (`<button>${searchAdd} <a href="index?remove=${searchAdd}">X</a></button>`);
+
+            // create hidden field
+            let hiddenAdd = document.createElement(`input`);
+            hiddenAdd.type = `hidden`;
+            hiddenAdd.name = `old`;
+            hiddenAdd.value = searchAdd;
+            document.getElementById(`nfpSearchInput`).appendChild(hiddenAdd);
+            console.log(searchAdd);
+
+        }
+
+        // render the media list
+
+        let varVideoTable = document.getElementById(`tableVideoList`);
+        let varVideoList;
+        let oldTemp = [];
+        if (searchOld) {
+            // break old search querystring into array
+            oldTemp = searchOld.split(",");
+            // add new search data into old search data array
+            if (searchAdd) {
+                oldTemp.push(searchAdd);
+                oldTemp = [...new Set(oldTemp)];
             };
         };
-        searchAdd = splitAdd.join();
-    } else if (searchAdd) {
-        splitTemp = [];
-        splitTemp = searchAdd.split(",");
-        for (item in splitTemp) {
-            if (splitTemp[item] !== "null") {
-                splitAdd.push(splitTemp[item]);
-            };
-        };
-        searchAdd = splitAdd.join();
-        console.log(searchAdd);
-    };
+        
+        // iterate through media records
+        for (let i=0; i<videoArray.length; i++) {
+            
+            // if there is new and old search data
+            if (searchAdd && searchOld || searchOld) {
+                // console.log(`both`)
+                // console.log(`oldTemp ${i} ${oldTemp}`);
 
-    let addData = (searchAdd ? `<input type="hidden" name="add" value="${searchAdd}"></input>` : ``);
-    let persistData = (searchData ? `<input type="hidden" name="search" value="${searchData}"></input>` : ``);
+                let intersection = [];
+                intersection = oldTemp.filter(x => videoArray[i].videoTags.includes(x));
+                // console.log(`intersection ${intersection}`)
 
-    // display tags from querystring
-    for (let tagItem in searchAdd) {
-        document.getElementById(`tags_container`).innerHTML = (`<button>${searchAdd} <a href="index.html?remove=${searchAdd}">X</a></button>`);
-    };
-    // (`
-    // <form method="GET"><nobr>${data.data[coinObj].name}<button class="remove" type="submit">X</button></nobr>
-    // ${limitData}
-    // ${persistData}
-    // ${addData}
-    // <input type="hidden" name="remove" value="${data.data[coinObj].id}"></form>
-    // `);
-
-    let varVideoTable = document.getElementById(`tableVideoList`);
-    let varVideoList;
-    for (let i=0; i<videoArray.length; i++) {
-        // console.log(videoArray[i].videoName);
-        if (!searchAdd) {
-            console.log(`There was no search criteria.`)
-            varVideoList = document.createElement(`tr`);
-            varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoTags}</td><td>${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td>${videoArray[i].videoURL}</td><td><a href="">Edit</a></td>`)
-            varVideoTable.appendChild(varVideoList);
-        } else {
-            if (videoArray[i].videoTags.includes(searchData)) {
+                // *** what am I finding out by checking lengths here?
+                if (intersection.length === oldTemp.length) {
+                    varVideoList = document.createElement(`tr`);
+                    varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}">Edit</a></td>`)
+                    varVideoTable.appendChild(varVideoList);
+                };
+            // if there is only new search data
+            } else if (searchAdd) {
+                // console.log(`add`)
+                if (videoArray[i].videoTags.includes(searchData)) {
+                    varVideoList = document.createElement(`tr`);
+                    varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}">Edit</a></td>`)
+                    varVideoTable.appendChild(varVideoList);
+                };
+            // there was no search data - render all records
+            } else {
+                // console.log(`There was no search criteria.`)
                 varVideoList = document.createElement(`tr`);
-                varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoTags}</td><td>${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td>${videoArray[i].videoURL}</td><td><a href="">Edit</a></td>`)
+                varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}">Edit</a></td>`)
                 varVideoTable.appendChild(varVideoList);
             };
         };
-    };
+    }, function(xhr) { console.error(xhr); });
 });

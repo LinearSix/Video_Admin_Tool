@@ -27,10 +27,14 @@ app.use(favicon(path.join(__dirname,'public','favicon.ico')));
 app.set('view engine', 'ejs')
 
 // set express routes
-const route_cbc = require('./routes/index');
+const route_index = require('./routes/index');
+const route_edit = require('./routes/edit');
+const route_update = require('./routes/update');
 
 // use express routes
-app.use(route_cbc);
+app.use(route_index);
+app.use(route_edit);
+app.use(route_update);
 
 // set redirect for users adding a /
 app.get('/', function(req, res){ res.redirect('index')});
