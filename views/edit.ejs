@@ -7,7 +7,14 @@
         <link rel="stylesheet" href="/index.css" charset="utf-8">
         <link rel="stylesheet" href="/auto-complete.css" charset="utf-8">
         <!-- <script type="text/javascript" src="/media_objects.js"></script> -->
-    <title>NFP | Video Search Tool</title>
+    <title>NFP | Media Search Tool</title>
+    <script>
+    window.onload = function(){
+        let urlParams = new URLSearchParams(window.location.search);
+
+        document.getElementById('cancelButton').setAttribute("onclick", `window.location.href = '/index?${urlParams}';`);
+    };
+    </script>
 </head>
 <body>
     <div class="div_body">
@@ -35,10 +42,13 @@
                 </div>
                 </form>
                 <form action="/update/<%= videoRecord[0].videoID %>" method="POST">
+                <input type="hidden" name="videoID" value="<%= videoRecord[0].videoID %>">
+                <input type="hidden" name="videoTags" value="<%= videoRecord[0].videoTags %>">
                 <table class="table_sort" id="tableVideoList">
                     <tr class="table_sort_header">
                         <td>Name</td>
                         <td>Type</td>
+                        <td>Added</td>
                         <td>Tags</td>
                         <td>Length</td>
                         <td>Description</td>
@@ -63,11 +73,12 @@
                                 <option value="image">image</option>
                             <% } %>
                         </select></td>
+                        <td><input type="text" name="videoAdded" value="<%= videoRecord[0].videoAdded %>"></td>
                         <td><% let stringTags = videoRecord[0].videoTags; %>
                             <% stringTags = stringTags.toString(); %>
                             <% let splitTags = stringTags.split(","); %>
                             <% for (let i=0; i<splitTags.length; i++) { %>
-                                <button name="videoTags"><%= splitTags[i] %>&nbsp;<a href="">X</a></button>
+                                <button name="videoTags" value="<%= splitTags[i] %>"><%= splitTags[i] %>&nbsp;<a href="">X</a></button>
                             <% } %>
                             </td>
                         <td><input type="text" name="videoLength" value="<%= videoRecord[0].videoLength %>"></td>
@@ -76,7 +87,7 @@
                             <br /><a href="<%= videoRecord[0].videoURL %>" target="_blank"><%= videoRecord[0].videoURL %></a></td>
                     </tr>
                     <tr>
-                        <td colspan="6" align="center"><input type="submit" value="Update"></td>
+                        <td colspan="7" align="center"><input type="submit" value="Update">&nbsp;<input type="button" id="cancelButton" value="Cancel" /></td>
                     </tr>
                 </table>
                 </form>

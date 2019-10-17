@@ -23,7 +23,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // all client-side work with videoArray must be inside this function
     loadJSON('vimeo.json', function(data) {
-         videoArray = (data); console.log(`videoArray: ${videoArray}`); 
+        let unsortedRecords = (data);
+        // console.log(`UNSORTED: ${JSON.stringify(unsortedRecords)}`);
+
+        function compare(a, b) {
+            // Use toLowerCase() to ignore character casing
+            const nameA = a.videoAdded.toLowerCase();
+            const nameB = b.videoAdded.toLowerCase();
+        
+            let comparison = 0;
+            if (nameA > nameB) {
+            comparison = 1;
+            } else if (nameA < nameB) {
+            comparison = -1;
+            }
+            return comparison;
+        }
+        
+        let videoArray = unsortedRecords;
+        // let videoArray = unsortedRecords.sort(compare);
+        // console.log(` `);
+        // console.log(`SORTED: ${JSON.stringify(videoArray)}`);
+
 
         // Variables used for getting data from query string
         let urlParams = new URLSearchParams(window.location.search);
@@ -69,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // also create a tag button from add
             // document.getElementById(`tags_container`).innerHTML = (`<button>${searchAdd} <a href="index?remove=${searchAdd}">X</a></button>`);
             searchOld = splitOld.join();
-            console.log(searchOld);
+            // console.log(searchOld);
 
             let hiddenAdd = document.createElement(`input`);
             hiddenAdd.type = `hidden`;
@@ -98,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             searchOld = splitOld.join();
-            console.log(searchOld);
+            // console.log(searchOld);
 
             let hiddenAdd = document.createElement(`input`);
             hiddenAdd.type = `hidden`;
@@ -117,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hiddenAdd.name = `old`;
             hiddenAdd.value = searchAdd;
             document.getElementById(`nfpSearchInput`).appendChild(hiddenAdd);
-            console.log(searchAdd);
+            // console.log(searchAdd);
 
         }
 
@@ -138,6 +159,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // iterate through media records
         for (let i=0; i<videoArray.length; i++) {
+
+            let videoDesc;
+            if (videoArray[i].videoDesc.length <= 100) {
+                videoDesc = videoArray[i].videoDesc;
+            } else {
+                videoDesc = `${videoArray[i].videoDesc.substring(0,100).substring(0,100)}...`;
+            }
             
             // if there is new and old search data
             if (searchAdd && searchOld || searchOld) {
@@ -151,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // *** what am I finding out by checking lengths here?
                 if (intersection.length === oldTemp.length) {
                     varVideoList = document.createElement(`tr`);
-                    varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}">Edit</a></td>`)
+                    varVideoList.innerHTML = (`<td>${(i+1)}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
                     varVideoTable.appendChild(varVideoList);
                 };
             // if there is only new search data
@@ -159,14 +187,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 // console.log(`add`)
                 if (videoArray[i].videoTags.includes(searchData)) {
                     varVideoList = document.createElement(`tr`);
-                    varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}">Edit</a></td>`)
+                    varVideoList.innerHTML = (`<td>${(i+1)}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
                     varVideoTable.appendChild(varVideoList);
                 };
             // there was no search data - render all records
             } else {
                 // console.log(`There was no search criteria.`)
                 varVideoList = document.createElement(`tr`);
-                varVideoList.innerHTML = (`<td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td>${videoArray[i].videoDesc}</td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}">Edit</a></td>`)
+                varVideoList.innerHTML = (`<td>${(i+1)}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
                 varVideoTable.appendChild(varVideoList);
             };
         };

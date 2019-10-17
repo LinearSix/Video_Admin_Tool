@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/index.css" charset="utf-8">
+        <link rel="stylesheet" href="/auto-complete.css" charset="utf-8">
+        <!-- <script type="text/javascript" src="/media_objects.js"></script> -->
+    <title>NFP | Media Search Tool</title>
+    <script>
+    window.onload = function(){
+        let urlParams = new URLSearchParams(window.location.search);
+
+        document.getElementById('cancelButton').setAttribute("onclick", `window.location.href = 'index?${urlParams}';`);
+    };
+    </script>
+    <style>
+        .form-popup {
+            text-align: left;
+            width: 50%;
+            /* height: 500px; */
+            display: none;
+            position: fixed;
+            top: 10vh;
+            left: 25vw;
+            /* transform: translate(-50%, -50%); */
+            border: 3px solid #f1f1f1;
+            z-index: 1;
+            background-color: #f2f2f2;
+        }
+        
+        /* Add styles to the form container */
+        .form-container {
+            /* max-width: 300px; */
+            padding: 10px;
+            background-color: white;
+        }
+        
+        /* Full-width input fields */
+        .form-container input[type=text], .form-container input[type=password] {
+            width: 93%;
+            padding: 5px;
+            /* margin: 0px 0 0px 0; */
+            border: none;
+            background: #f1f1f1;
+        }
+
+        .form-container select, .form-container {
+            /* width: 93%; */
+            padding: 15px;
+            /* margin: 5px 0 22px 0; */
+            border: none;
+            background: #f1f1f1;
+        }
+        
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+        
+        /* Set a style for the update button */
+        .form-container .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 8px;
+            border: none;
+            cursor: pointer;
+            width: 85px;
+            margin-bottom:10px;
+            opacity: 0.8;
+        }
+        
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        /* Add a black background color to the delete button */
+        .form-container .delete {
+            background-color: black;
+            color: white;
+        }
+        
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="div_body">
+        <div class="div_main_container">
+            <div class="div_sub_container">
+                <div class="logo_container">
+                    <img src="https://internal.nfp.com/webfiles/public/2015/emails/pardot-templates/images/nfp-logo-green-cmyk-150px.png" alt="NFP" style="border: none; display: block;"/>
+                </div>
+                <div class="search_container">
+                    <div class="div_headline">
+                        NFP Media Search
+                    </div>
+                </div>
+                <form method="GET" action="/index">
+                <div class="search_container">
+                    <div class="search_box">
+                        <input type="text" autofocus id="nfpSearchInput" name="add" value="" class="nfpSearchBoxInput" placeholder="Search Video Tags" />
+                        <a class="nfpSearchIcon" href=""><input type="image" name="submit" width="20" src="https://webfiles2.nfp.com/webfiles/public/mg/icon-search-mobile.png" alt="Search" class="img-responsive" style="display: block; margin: auto;" /></a>
+                    </div>
+                </div>
+                <div class="pagination_container">
+                    <font style="color: #303030;"><strong>1-25</strong> |</font> 26-50 <font style="color: #000000;">|</font> 51-75
+                </div>
+                <div class="tags_container" id="tags_container">
+                </div>
+                </form>
+                <form action="/submit" method="POST">
+                <div id="tagContainer"></div>
+                <table class="table_sort" id="tableVideoList">
+                    <tr class="table_sort_header">
+                        <td>Name</td>
+                        <td>Type</td>
+                        <td>Added</td>
+                        <td>Tags</td>
+                        <td>Length</td>
+                        <td>Description</td>
+                        <td>URL</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="videoName" placeholder="Media Name"></td>
+                        <td><select name="videoType">
+                            <option value="video">video</option>
+                            <option value="audio">audio</option>
+                            <option value="image">image</option>
+                        </select></td>
+                        <td><input type="text" name="videoAdded" placeholder="year-m-d"></td>
+                        <td><div name="addTag" id="addTag" style="background-color: lightgray;" onclick="openForm_tag_add_form()">Add</div>
+                            <div id="anotherTag"></div>
+                            <div class="form-popup" id="tag_add_form">
+                                <div class="form-container">
+                                    <h1>Add Tag</h1>
+                                    <input type="text" id="newTag"></p>
+                                    <br />&nbsp;<br />
+                                    <button type="button" onclick="add_the_tag()" class="btn">Add</button>
+                                    <button type="button" class="btn cancel" onclick="closeForm_tag_add_form()">Cancel</button>
+                                </div>
+                            </div>
+                            <script>
+                                function add_the_tag() {
+                                    let newTag = document.getElementById("newTag");
+                                    newTag = newTag.value;
+                                    let anotherTag = document.getElementById("anotherTag");
+                                    anotherTag.innerHTML = `${newTag}`;
+                                    newTag = `<input type="hidden" id="videoTags" name="videoTags" value="${newTag}">`;
+                                    console.log(newTag);
+                                    document.getElementById("tagContainer").innerHTML = newTag;
+                                    document.getElementById("newTag").value = "";
+                                    closeForm_tag_add_form();
+                                }
+
+                                function openForm_tag_add_form() {
+                                    document.getElementById("tag_add_form").style.display = "inline";
+                                }
+                                
+                                function closeForm_tag_add_form() {
+                                    document.getElementById("tag_add_form").style.display = "none";
+                                }
+                            </script>
+                        </td>
+                        <td><input type="text" name="videoLength" placeholder="hr:mn:sc"></td>
+                        <td><textarea name="videoDesc" placeholder="Media Description"></textarea></td>
+                        <td><input type="text" name="videoURL" placeholder="http://full.url"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" align="center"><button type="submit" formaction="/submit" value="Submit">Submit</button>&nbsp;<input type="button" id="cancelButton" value="Cancel" /></td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/auto-complete.js"></script>
+    <script>
+        var demo1 = new autoComplete({
+            selector: '#nfpSearchInput',
+            minChars: 1,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                var choices = [<% for(let i=0;i<videoRecords.length;i++){%>'<%= videoRecords[i].videoTags %>', <% } %>]
+                choices = [...new Set(choices)]
+                var suggestions = [];
+                for (i=0;i<choices.length;i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -30,11 +30,17 @@ app.set('view engine', 'ejs')
 const route_index = require('./routes/index');
 const route_edit = require('./routes/edit');
 const route_update = require('./routes/update');
+const route_add = require('./routes/add');
+const route_submit = require('./routes/submit');
+const route_delete = require('./routes/delete');
 
 // use express routes
 app.use(route_index);
 app.use(route_edit);
 app.use(route_update);
+app.use(route_add);
+app.use(route_submit);
+app.use(route_delete);
 
 // set redirect for users adding a /
 app.get('/', function(req, res){ res.redirect('index')});

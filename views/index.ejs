@@ -7,7 +7,15 @@
         <link rel="stylesheet" href="/index.css" charset="utf-8">
         <link rel="stylesheet" href="/auto-complete.css" charset="utf-8">
         <script type="text/javascript" src="/media_objects.js"></script>
-    <title>NFP | Video Search Tool</title>
+    <title>NFP | Media Search Tool</title>
+    <script>
+    window.onload = function(){
+        let urlParams = new URLSearchParams(window.location.search);
+
+        document.getElementById('addButton').setAttribute("onclick", `window.location.href = 'add?${urlParams}';`);
+
+    };
+    </script>
 </head>
 <body>
     <div class="div_body">
@@ -36,13 +44,15 @@
                 </form>
                 <table class="table_sort" id="tableVideoList">
                     <tr class="table_sort_header">
+                        <td></td>
                         <td width="150">Name</td>
                         <td>Type</td>
+                        <td>Added</td>
                         <td>Tags</td>
                         <td>Length</td>
                         <td>Description</td>
                         <td>URL</td>
-                        <td></td>
+                        <td><input type="button" id="addButton" value="Add"/></td>
                     </tr>
                 </table>
             </div>
@@ -55,7 +65,16 @@
             minChars: 1,
             source: function(term, suggest){
                 term = term.toLowerCase();
-                var choices = [<% for(let i=0;i<videoRecords.length;i++){%>'<%= videoRecords[i].videoTags %>', <% } %>]
+                var tags = [<% for(let i=0;i<videoRecords.length;i++){ %>'<%= videoRecords[i].videoTags %>', <% } %>];
+                let mergedTags = [];
+                for (let j=0; j<tags.length; j++) {
+                    mergedTags.push(tags[j].split(","));
+                }
+                console.log(`Before cleanup ${mergedTags}`);
+                let choices = Array.prototype.concat.apply([], mergedTags);
+                console.log(" ")
+                console.log(`After cleanup ${choices}`);
+                choices = [...new Set(choices)]
                 // var choices = [`animation`, `interview`, `serious`, `comedic`, `instructional`, `Kim Davis`, `Doug Hammond`, `Addiction Treatment`, `Mike Goldman`, `Breweries`, `Cemeteries & Memorial Parks`, `Chemical`, `Clubs & Golf Courses`, `Communications, Media & Technology`, `Condominium Homeowners`, `Construction`];
                 var suggestions = [];
                 for (i=0;i<choices.length;i++)

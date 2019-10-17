@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
-// render index page
-router.get('/index', (req, res, next) => {
+// render record add page
+router.get('/add', (req, res, next) => {
 
     let records;
 
@@ -21,7 +21,7 @@ router.get('/index', (req, res, next) => {
         };
         
         // console.log(videoRecords)
-        res.render('index', { videoRecords })
+        res.render('add', { videoRecords })
     });
 });
 
