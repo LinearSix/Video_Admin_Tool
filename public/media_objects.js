@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // iterate through media records
         for (let i=0; i<videoArray.length; i++) {
 
+            // truncate long description to 100 characters
             let videoDesc;
             if (videoArray[i].videoDesc.length <= 100) {
                 videoDesc = videoArray[i].videoDesc;
@@ -167,34 +168,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 videoDesc = `${videoArray[i].videoDesc.substring(0,100).substring(0,100)}...`;
             }
             
-            // if there is new and old search data
+            // if there is new and old search data or just old search data
             if (searchAdd && searchOld || searchOld) {
                 // console.log(`both`)
                 // console.log(`oldTemp ${i} ${oldTemp}`);
 
-                let intersection = [];
-                intersection = oldTemp.filter(x => videoArray[i].videoTags.includes(x));
+                let str = (videoArray[i].videoTags.toString()).toLowerCase();
+                let result = false;
+                let count = 0;
+                
+                // iterate through querystring array to check matches
+                for (let k=0; k<oldTemp.length; k++) {
+                    let substr = (oldTemp[k].toString()).toLowerCase();
+                    result = str.indexOf(substr) > -1;
+                    if (result === true) {
+                        count = count + 1;
+                        console.log(`count: ${count}`);
+                    };
+                };
+                console.log(oldTemp);
+                // let intersection = [];
+                // intersection = oldTemp.filter(x => videoArray[i].videoTags.includes(x));
                 // console.log(`intersection ${intersection}`)
 
-                // *** what am I finding out by checking lengths here?
-                if (intersection.length === oldTemp.length) {
+                // if there were the same number of matches in the above loop as there are items in the search
+                if (count === oldTemp.length) {
+                    console.log(`tags: ${videoArray[i].videoTags}`)
                     varVideoList = document.createElement(`tr`);
-                    varVideoList.innerHTML = (`<td>${(i+1)}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
+                    varVideoList.innerHTML = (`<td>${videoArray[i].videoID}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
                     varVideoTable.appendChild(varVideoList);
                 };
             // if there is only new search data
             } else if (searchAdd) {
-                // console.log(`add`)
-                if (videoArray[i].videoTags.includes(searchData)) {
+
+                let str = (videoArray[i].videoTags.toString()).toLowerCase();
+                let substr = (searchData.toString()).toLowerCase();
+                let result = str.indexOf(substr) > -1;
+
+                if (result === true) {
                     varVideoList = document.createElement(`tr`);
-                    varVideoList.innerHTML = (`<td>${(i+1)}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
+                    varVideoList.innerHTML = (`<td>${videoArray[i].videoID}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
                     varVideoTable.appendChild(varVideoList);
                 };
+                // console.log(`add`)
+                // if (videoArray[i].videoTags.includes(searchData)) {
+                //     varVideoList = document.createElement(`tr`);
+                //     varVideoList.innerHTML = (`<td>${videoArray[i].videoID}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
+                //     varVideoTable.appendChild(varVideoList);
+                // };
             // there was no search data - render all records
             } else {
                 // console.log(`There was no search criteria.`)
                 varVideoList = document.createElement(`tr`);
-                varVideoList.innerHTML = (`<td>${(i+1)}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
+                varVideoList.innerHTML = (`<td>${videoArray[i].videoID}</td><td>${videoArray[i].videoName}</td><td>${videoArray[i].videoType}</td><td>${videoArray[i].videoAdded}</td><td>${videoArray[i].videoTags}</td><td align="right">${videoArray[i].videoLength}</td><td><div class="descClass" id="truncDesc">${videoDesc}</div><div class="descClass" id="fullDesc" style="display: none;">${videoArray[i].videoDesc}</div></td><td><a href="${videoArray[i].videoURL}" target="_blank">${videoArray[i].videoURL}</a></td><td><a href="/edit/${videoArray[i].videoID}?${urlParams}">Edit</a>&nbsp;|&nbsp;<a href="/delete/${videoArray[i].videoID}">Delete</a></td>`)
                 varVideoTable.appendChild(varVideoList);
             };
         };
